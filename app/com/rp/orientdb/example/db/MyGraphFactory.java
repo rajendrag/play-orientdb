@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MyGraphFactory {
 
-    OrientGraphFactory factory = new OrientGraphFactory("remote:127.0.0.1/surgery_uchealth", "root", "root", true);
+    OrientGraphFactory factory = new OrientGraphFactory("remote:127.0.0.1/test", "root", "root", true);
     //private static OrientGraphFactory
     public OrientGraph getGraph() {
         OrientGraph g = factory.getTx();

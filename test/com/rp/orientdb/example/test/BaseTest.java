@@ -5,14 +5,20 @@ import static play.inject.Bindings.bind;
 import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.rp.orientdb.example.db.MyGraphFactory;
 import com.rp.orientdb.example.domain.Feature;
 import com.rp.orientdb.example.domain.User;
 import com.rp.orientdb.example.service.UserAccessService;
+import com.syncleus.ferma.DefaultClassInitializer;
+import com.syncleus.ferma.FramedGraph;
 import java.io.File;
 import java.util.Map;
 import javax.inject.Inject;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import play.Application;
 import play.Configuration;
 import play.Logger;
@@ -52,6 +58,9 @@ public class BaseTest extends WithApplication {
     @Inject
     UserAccessService userAccessService;
 
+    @Inject
+    MyGraphFactory factory;
+
     @Override
     protected Application provideApplication() {
         if (APP_CACHED == null) {
@@ -62,18 +71,22 @@ public class BaseTest extends WithApplication {
         return APP_CACHED;
     }
 
-    @BeforeClass
-    public static void setUp() {
-        /*Feature dashboard = new Feature();
+    @Before
+    public void setUp() {
+        FramedGraph fg = factory.getFramedGraph();
+        Feature dashboard = fg.addFramedVertex("class:Feature", new DefaultClassInitializer<>(Feature.class));
         dashboard.setName("DASHBOARD");
         dashboard.setFeatureId("1");
-        */
-
+        fg.shutdown();
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @After
+    public void tearDown() {
         System.out.println("Runs after all tests in the annotation above.");
     }
 
+    @Test
+    public void testFeature() {
+        System.out.println("Testing ");
+    }
 }
