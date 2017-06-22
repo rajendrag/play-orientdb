@@ -24,6 +24,12 @@ public class Feature extends AbstractVertexFrame {
         setProperty("feature_id", featureId);
     }
 
+    public void addResources(Resource... resources) {
+        for(Resource resource : resources) {
+            resource.addFramedEdge("PART_OF", this);
+        }
+    }
+
     public List<? extends Resource> getResources() {
         return in("PART_OF").has(Resource.class).toListExplicit(Resource.class);
     }

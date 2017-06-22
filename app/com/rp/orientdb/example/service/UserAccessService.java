@@ -12,8 +12,19 @@ import java.util.List;
 @ImplementedBy(UserAccessServiceImpl.class)
 public interface UserAccessService {
 
+    /**
+     * This fetches all the resource names using MATCH pattern and goes $dept of 2
+     *
+     * @param userId
+     * @return
+     */
     public List<String> getResourceNames(String userId);
 
+    /**
+     * This fetches all the Resource vertices using OGM (Ferma) and goes to two level deeper
+     * @param userId
+     * @return
+     */
     public List<Resource> getResources(String userId);
 
     List<Role> getRoles(String userId);

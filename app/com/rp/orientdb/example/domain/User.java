@@ -57,4 +57,16 @@ public class User extends AbstractVertexFrame {
         return (List<Role>) out("HAS_ACCESS").has("@class", "Role").toListExplicit(Role.class);
     }
 
+    public void addRoles(Role... roles) {
+        for (Role role : roles) {
+            this.addFramedEdge("HAS_ACCESS", role);
+        }
+    }
+
+    public void addResources(Resource... resources) {
+        for(Resource resource : resources) {
+            this.addFramedEdge("HAS_ACCESS", resource);
+        }
+
+    }
 }

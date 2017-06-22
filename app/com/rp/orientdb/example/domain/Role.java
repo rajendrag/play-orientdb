@@ -29,6 +29,12 @@ public class Role extends AbstractVertexFrame {
         setProperty("role_id", roleId);
     }
 
+    public void addResources(Resource... resources) {
+        for(Resource resource : resources) {
+            this.addFramedEdge("HAS_ACCESS", resource);
+        }
+    }
+
     public List<Resource> getResources() {
         return (List<Resource>) out("HAS_ACCESS").has("@class", "Resource").toListExplicit(Resource.class);
     }

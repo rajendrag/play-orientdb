@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import play.Application;
 import play.Configuration;
+import play.Logger;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.test.WithApplication;
 
@@ -26,27 +27,62 @@ import play.test.WithApplication;
  */
 public class DBTest extends BaseTest {
 
+    private static final Logger.ALogger log = Logger.of(DBTest.class);
+
     @Inject
     Configuration configuration;
 
     @Test
     public void testResources() {
-        List<String> resources = userAccessService.getResourceNames("100000_ADMIN");
+        log.info("In testResources()");
+        List<String> resources = userAccessService.getResourceNames("1000");
         Assert.assertNotNull(resources);
-        Assert.assertEquals(8, resources.size());
         resources.stream().forEachOrdered(System.out::println);
+        Assert.assertEquals(4, resources.size());
+        Assert.assertTrue(resources.contains("Add Account"));
+        Assert.assertTrue(resources.contains("Update Account"));
+        Assert.assertTrue(resources.contains("Delete Account"));
+        Assert.assertTrue(resources.contains("View Account"));
+
+        resources = userAccessService.getResourceNames("1001");
+        Assert.assertNotNull(resources);
+        resources.stream().forEachOrdered(System.out::println);
+        Assert.assertEquals(4, resources.size());
+        Assert.assertTrue(resources.contains("Metric1"));
+        Assert.assertTrue(resources.contains("Metric2"));
+        Assert.assertTrue(resources.contains("Metric3"));
+        Assert.assertTrue(resources.contains("View Account"));
+
+        log.info("Done testResources()");
     }
 
     @Test
     public void testFramedResources() {
-       List<Resource> resources = userAccessService.getResources("100000_ADMIN");
+        log.info("In testFramedResources()");
+        List<Resource> resources = userAccessService.getResources("1000");
         Assert.assertNotNull(resources);
-        Assert.assertEquals(8, resources.size());
+        Assert.assertEquals(4, resources.size());
         List<String> resourceNames = resources.stream().map(r -> {
             System.out.println("Resource name :"+r.getName());
             return r.getName();
         }).collect(Collectors.toList());
-        Assert.assertTrue(resourceNames.contains("Update_EHR"));
+        Assert.assertTrue(resourceNames.contains("Add Account"));
+        Assert.assertTrue(resourceNames.contains("Update Account"));
+        Assert.assertTrue(resourceNames.contains("Delete Account"));
+        Assert.assertTrue(resourceNames.contains("View Account"));
+
+        resources = userAccessService.getResources("1001");
+        Assert.assertNotNull(resources);
+        Assert.assertEquals(4, resources.size());
+        resourceNames = resources.stream().map(r -> {
+            System.out.println("Resource name :"+r.getName());
+            return r.getName();
+        }).collect(Collectors.toList());
+        Assert.assertTrue(resourceNames.contains("Metric1"));
+        Assert.assertTrue(resourceNames.contains("Metric2"));
+        Assert.assertTrue(resourceNames.contains("Metric3"));
+        Assert.assertTrue(resourceNames.contains("View Account"));
+        log.info("Done testFramedResources()");
     }
 
 
