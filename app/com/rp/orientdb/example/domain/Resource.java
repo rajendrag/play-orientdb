@@ -29,7 +29,7 @@ public class Resource extends AbstractVertexFrame {
     }
 
     public Feature getFeature() {
-        return out("PART_OF").has(Feature.class).toListExplicit(Feature.class).get(0);
+        return out("PART_OF").has("@class", "Feature").toListExplicit(Feature.class).get(0);
     }
 
 }

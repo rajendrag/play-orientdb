@@ -10,27 +10,24 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 import play.Application;
+import play.Configuration;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.test.WithApplication;
 
 /**
  * Created by RP on 6/15/17.
  */
-public class DBTest extends WithApplication {
+public class DBTest extends BaseTest {
 
     @Inject
-    UserAccessService userAccessService;
-
-    @Override
-    protected Application provideApplication() {
-        GuiceApplicationBuilder builder = new GuiceApplicationBuilder().in(new File("."));
-        Injector injector = Guice.createInjector(builder.applicationModule());
-        injector.injectMembers(this);
-        return builder.build();
-    }
+    Configuration configuration;
 
     @Test
     public void testResources() {
@@ -42,15 +39,15 @@ public class DBTest extends WithApplication {
 
     @Test
     public void testFramedResources() {
-        /*List<Role> roles = userAccessService.getRoles("100000_ADMIN");
-        System.out.println("ROles " + roles.size());*/
        List<Resource> resources = userAccessService.getResources("100000_ADMIN");
         Assert.assertNotNull(resources);
-        //Assert.assertEquals(8, resources.size());
+        Assert.assertEquals(8, resources.size());
         List<String> resourceNames = resources.stream().map(r -> {
             System.out.println("Resource name :"+r.getName());
             return r.getName();
         }).collect(Collectors.toList());
         Assert.assertTrue(resourceNames.contains("Update_EHR"));
     }
+
+
 }

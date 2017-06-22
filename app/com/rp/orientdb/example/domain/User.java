@@ -33,6 +33,10 @@ public class User extends AbstractVertexFrame {
         setProperty("user_id", userId);
     }
 
+    /**
+     * TODO: Use Tinkerpop way (Pipelines) to figure out how to fetch the resources
+     * @return
+     */
     public List<Resource> getResources() {
         //return has_access.has(Resource.class).toListExplicit(Resource.class);
         /*return out("HAS_ACCESS")
