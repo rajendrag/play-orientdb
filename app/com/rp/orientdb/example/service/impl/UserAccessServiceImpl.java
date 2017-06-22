@@ -2,8 +2,11 @@ package com.rp.orientdb.example.service.impl;
 
 import com.rp.orientdb.example.db.MyGraphFactory;
 import com.rp.orientdb.example.domain.Resource;
+import com.rp.orientdb.example.domain.Role;
+import com.rp.orientdb.example.domain.User;
 import com.rp.orientdb.example.query.UserAccessQueryHelper;
 import com.rp.orientdb.example.service.UserAccessService;
+import com.syncleus.ferma.FramedGraph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import java.util.Collections;
@@ -26,7 +29,7 @@ public class UserAccessServiceImpl implements UserAccessService {
     UserAccessQueryHelper queryHelper;
 
     @Override
-    public List<String> getResources(String userId) {
+    public List<String> getResourceNames(String userId) {
         OrientGraph graph = graphFactory.getGraph();
         Iterable<Vertex> vertices = graph.command(queryHelper.resourcesOfUserQuery())
                 .execute(Collections.singletonMap("userId", userId));
@@ -35,4 +38,28 @@ public class UserAccessServiceImpl implements UserAccessService {
         graph.shutdown();
         return resources;
     }
+
+    @Override
+    public List<Resource> getResources(String userId) {
+        FramedGraph framedGraph = graphFactory.getFramedGraph();
+        Iterable<? extends User> users = framedGraph.getFramedVerticesExplicit("user_id", userId, User.class);
+        if(users.iterator().hasNext()) {
+            User user = users.iterator().next();
+            return (List<Resource>) user.getResources();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Role> getRoles(String userId) {
+        FramedGraph framedGraph = graphFactory.getFramedGraph();
+        Iterable<? extends User> users = framedGraph.getFramedVerticesExplicit("user_id", userId, User.class);
+        if(users.iterator().hasNext()) {
+            User user = users.iterator().next();
+            return (List<Role>) user.getRoles();
+        }
+        return null;
+    }
+
+
 }

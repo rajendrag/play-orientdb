@@ -20,6 +20,19 @@ libraryDependencies += filters
 // https://mvnrepository.com/artifact/com.orientechnologies/orientdb-graphdb
 libraryDependencies += "com.orientechnologies" % "orientdb-graphdb" % "2.2.21"
 // https://mvnrepository.com/artifact/com.tinkerpop/frames
-libraryDependencies += "com.tinkerpop" % "frames" % "2.6.0"
+//libraryDependencies += "com.tinkerpop" % "frames" % "2.6.0"
+// https://mvnrepository.com/artifact/com.syncleus.ferma/ferma
+libraryDependencies += "com.syncleus.ferma" % "ferma" % "2.2.2"
 
 
+fork in run := false
+
+//PlayKeys.externalizeResources := false
+
+//sources in doc in Compile := List()
+
+//val testOptions = "-Dconfig.file=conf/" + Option(System.getProperty("test.config")).getOrElse("application") + ".conf"
+
+javaOptions in Test ++= Seq(
+  "-Dconfig.file=conf/" + Option(System.getProperty("test.config")).getOrElse("application") + ".conf"
+)
