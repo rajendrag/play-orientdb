@@ -33,8 +33,8 @@ public class UserAccessServiceImpl implements UserAccessService {
         OrientGraph graph = graphFactory.getGraph();
         Iterable<Vertex> vertices = graph.command(queryHelper.resourcesOfUserQuery())
                 .execute(Collections.singletonMap("userId", userId));
-        List<String> resources = StreamSupport.stream(vertices.spliterator(), false).map(v -> (String)v.getProperty("name")).collect(
-                Collectors.toList());
+        List<String> resources = StreamSupport.stream(vertices.spliterator(), false)
+                .map(v -> (String)v.getProperty("name")).collect(Collectors.toList());
         graph.shutdown();
         return resources;
     }

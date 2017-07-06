@@ -1,10 +1,12 @@
 package com.rp.orientdb.example.domain;
 
 import com.syncleus.ferma.AbstractVertexFrame;
+import com.syncleus.ferma.DelegatingFramedGraph;
 import com.syncleus.ferma.VertexFrame;
 import com.syncleus.ferma.pipes.TraversalFunctionPipe;
 import com.syncleus.ferma.traversals.TraversalFunction;
 import com.syncleus.ferma.traversals.VertexTraversal;
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle;
@@ -48,6 +50,7 @@ public class User extends AbstractVertexFrame {
             }
         }, 2)
                 .toList(Resource.class);*/
+        //((OrientGraph)((DelegatingFramedGraph)getGraph()).getBaseGraph()).command()
         List<Resource> resources = new ArrayList<>((List<Resource>) out("HAS_ACCESS").has("@class", "Resource").toListExplicit(Resource.class));
         resources.addAll(getRoles().stream().map(r -> r.getResources()).flatMap(List::stream).collect(Collectors.toList()));
         return resources;
